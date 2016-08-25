@@ -10,6 +10,7 @@ import (
 )
 
 type TorrentSearch struct {
+	Infohash   string
 	Name       string
 	Length     int64
 	Heat       int64
@@ -57,6 +58,7 @@ func SearchKeyword(client *elastic.Client, key string, from, size int) ([]Torren
 		for _, hit := range result.Hits.Hits {
 			var torrent TorrentSearch
 			if err := json.Unmarshal(*hit.Source, &torrent); err == nil {
+				torrent.Infohash = hit.Id
 				torrents = append(torrents, torrent)
 			}
 		}

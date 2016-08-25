@@ -6,14 +6,14 @@
 </head>
 <body>
 <div>
-    Total: {{ torrents.total}}
+    Total: {{ total }}
 </div>
 
 <hr/>
 
 {% for torrent in  torrents %}
     <div>
-        {{ torrent.Name }} | {{ torrent.Length }}
+        <a href="magnet:?xt=urn:btih:{{ torrent.Infohash }}">{{ torrent.Name }}</a> | {{ torrent.Length }}
     </div>
 {% endfor %}
 
