@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -70,10 +71,14 @@ func search(ctx *iris.Context) {
 		return
 	}
 
+	urlPattern := fmt.Sprintf("/search?key=%v&page=", query)
+	pn := NewPagination(total, page, size, urlPattern)
+	pn.SetNumLinks(10).Init()
 	err = ctx.Render("search.html", map[string]interface{}{
-		"query":    query,
-		"torrents": data,
-		"total":    total,
+		"query":      query,
+		"torrents":   data,
+		"total":      total,
+		"pagination": *pn,
 	})
 	handlerError(ctx, err)
 }

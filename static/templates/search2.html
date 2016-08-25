@@ -67,19 +67,29 @@
         <div class="row">
             <div class="col s6 offset-s1">
                 <ul class="pagination">
+                {% for page in pagination.Pages %}
+                    {% if (page.Number == pagination.Start) && (page.Number > 1) }
                     <li>
-                        <a href="/search?key={{ query }}&page=1">
+                        <a href="/search?key={{ query }}&page={{ page.Number - 1 }}">
                             <i class="fa fa-angle-left" aria-hidden="true"></i>
                         </a>
                     </li>
-                    <li class="waves-effect"><a href="/search?key={{ query }}&page=1">1</a></li>
-                    <li class="active"><a href="/search?key={{ query }}&page=2">2</a></li>
-                    <li class="waves-effect"><a href="/search?key={{ query }}&page=3">3</a></li>
+                    {% endif %}
+
+                    {% if page.Active %}
+                    <li class="active"><a href="{{ page.Link }}"> {{ page.Number }}</a></li>
+                    {% else %}
+                    <li class="waves-effect"><a href="{{ page.Link }}"> {{ page.Number }}</a></li>
+                    {% endif %}
+
+                    {% if (page.Number == pagination.End) && (page.Number < pagination.Total) %}
                     <li class="waves-effect">
-                        <a href="/search?key={{ query }}&page=2">
+                        <a href="/search?key={{ query }}&page={{ page.Number + 1 }}">
                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                         </a>
                     </li>
+                    {% endif %}
+                {% endfor %}
                 </ul>
             </div>
         </div>
