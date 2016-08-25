@@ -39,16 +39,17 @@ func GetTorrentByInfohashFromSE(client *elastic.Client, infohash string) (*Torre
 	return &data, nil
 }
 
-func SearchKeyword(client *elastic.Client, keys []string, from, size int) ([]TorrentSearch, error) {
-	_keys := make([]interface{}, 0, len(keys))
-	for _, k := range keys {
-		_keys = append(_keys, k)
-	}
+func SearchKeyword(client *elastic.Client, key string, from, size int) ([]TorrentSearch, int, error) {
+	// _keys := make([]interface{}, 0, len(keys))
+	// for _, k := range keys {
+	// 	_keys = append(_keys, k)
+	// }
+	//query := elastic.NewTermsQuery("Name", _keys...)
+	query := elastic.NewQueryStringQuery(keys)
 
-	query := elastic.NewTermsQuery("Name", _keys...)
 	result, err := client.Search().Index("torrent").Query(query).From(from).Size(size).Do()
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	torrents := make([]TorrentSearch, 0)
@@ -61,5 +62,5 @@ func SearchKeyword(client *elastic.Client, keys []string, from, size int) ([]Tor
 		}
 	}
 
-	return torrents, nil
+	return torrents, int(result.Hits.TotalHits), nil
 }

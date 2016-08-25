@@ -51,38 +51,29 @@ func search(ctx *iris.Context) {
 			ctx.Redirect("/")
 			return
 		}
-
 	}
 
-	var from int
-	var size int
-	var err error
-
-	if from, err = ctx.URLParamInt("from"); err != nil {
-		from = 0
+	var page int
+	if page, err := ctx.URLParamInt("page"); err != nil || page < 1 {
+		page = 1
 	}
 
-	if size, err = ctx.URLParamInt("size"); err != nil {
-		size = 10
-	}
+	size := g.Conf.PageSize
+	from = size * (page - 1)
 
-	queries := make([]string, 0)
-	for _, q := range strings.Split(query, " ") {
-		q = strings.TrimSpace(q)
-		if q != "" {
-			queries = append(queries, q)
-		}
-	}
-
-	data, err := SearchKeyword(g.ElasticClient, queries, from, size)
+	data, total, err := SearchKeyword(g.ElasticClient, query, from, size)
 	if err != nil {
 		handlerError(ctx, err)
+		return
+	} else if data == nil || len(data) == 0 {
+		ctx.EmitError(iris.StatusNotFound)
 		return
 	}
 
 	err = ctx.Render("search.html", map[string]interface{}{
 		"query":    query,
 		"torrents": data,
+		"total":    total,
 	})
 	handlerError(ctx, err)
 }
@@ -104,6 +95,13 @@ func main() {
 	web.Get("/search", search)
 
 	web.StaticWeb("/static", g.Conf.StaticDirectory, 1)
+
+	web.OnError(iris.StatusInternalServerError, func(ctx *iris.Context) {
+		ctx.Render("500.html", nil)
+	})
+	web.OnError(iris.StatusNotFound, func(ctx *iris.Context) {
+		ctx.Render("404.html", nil)
+	})
 
 	web.Listen(g.Conf.Address)
 }

@@ -22,6 +22,7 @@ type Config struct {
 	Database string `json:"db"`
 	LogFile  string `json:"logfile"`
 	LogLevel string `json:"loglevel"`
+	PageSize int    `json:"page_size"`
 
 	TemplateDirectory string `json:"template_directory"`
 	StaticDirectory   string `json:"static_directory"`

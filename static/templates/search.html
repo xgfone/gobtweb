@@ -5,6 +5,11 @@
     <title>BT Search - {{ query }}</title>
 </head>
 <body>
+<div>
+    Total: {{ torrents.total}}
+</div>
+
+<hr/>
 
 {% for torrent in  torrents %}
     <div>
