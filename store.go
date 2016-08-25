@@ -4,17 +4,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/btlike/repository"
 	"github.com/xgfone/gobt/g"
-	"gopkg.in/olivere/elastic.v3"
 )
 
-func GetTorrentByInfohashFromDB(client repository.Repository, infohash string) (repository.Torrent, error) {
+type TorrentSearch struct {
+	Name       string
+	Length     int64
+	Heat       int64
+	CreateTime time.Time
+}
+
+func GetTorrentByInfohashFromDB(client repository.Repository, infohash string) (*repository.Torrent, error) {
 	if t, err := client.GetTorrentByInfohash(infohash); err != nil || t.Infohash != infohash {
 		return nil, err
 	} else {
-		return t, nil
+		return &t, nil
 	}
 }
 
@@ -44,7 +51,7 @@ func SearchKeyword(client *elastic.Client, key string, from, size int) ([]reposi
 	if result.Hits.TotalHits > 0 {
 		for _, hit := range result.Hits.Hits {
 			if t, err := GetTorrentByInfohashFromDB(g.Repository, hit.Id); err == nil {
-				results = append(results, t)
+				results = append(results, *t)
 			}
 		}
 	}
