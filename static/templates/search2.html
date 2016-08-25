@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>BT Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="BT, magnet, 磁力下载, 资源搜索, BT下载, 种子下载, btdigg">
+    <meta name="description" content="A BT search engine based on the DHT spider and ElasticSearch.">
+    <link rel="stylesheet" href="/static/css/lib/materialize.min.css">
+    <link rel='stylesheet' href='/static/css/lib/nprogress.css'>
+    <link rel="stylesheet" href="/static/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo">
+                <img alt="logo" src="/static/img/logo-small.png">
+            </a>
+            <form action="/search" class="main">
+                <div class="input-field">
+                    <input placeholder="Search" type="text" name="key" autocomplete="off" value="{{ query }}">
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <main>
+        <div class="row">
+            <div class="col s6 offset-s1">
+                <div class="gray search-result-summary">
+                    共找到 {{ total }} 条结果
+                </div>
+
+            {% for torrent in  torrents %}
+                <div>
+                    <div class="bt-item">
+                        <div>
+                            <a href="magnet:?xt=urn:btih:{{ torrent.Infohash }}">{{ torrent.Name }}</a>
+                        </div>
+                        <ul class="file-list">
+                        {% for file in torrent.Files %}
+                            <li>
+                                {{ file.Name }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        <div class="status">
+                            <ul>
+                                <li>
+                                    size: {{ torrent.Length }}Bytes
+                                </li>
+                                <li>
+                                    files: {{ torrent.FileCount }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s6 offset-s1">
+                <ul class="pagination">
+                    <li>
+                        <a href="/search?key={{ query }}&page=1">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="waves-effect"><a href="/search?key={{ query }}&page=1">1</a></li>
+                    <li class="active"><a href="/search?key={{ query }}&page=2">2</a></li>
+                    <li class="waves-effect"><a href="/search?key={{ query }}&page=3">3</a></li>
+                    <li class="waves-effect">
+                        <a href="/search?key={{ query }}&page=2">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="l12 s12 center-align disclaimer">
+                        DISCLAIMER: This site just provides BT searching service. It does NOT save any resource from the internet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/static/js/lib/jquery.min.js"></script>
+    <script src="/static/js/lib/materialize.min.js"></script>
+    <script src="/static/js/lib/nprogress.js"></script>
+    <script src="/static/js/lib/mark.min.js"></script>
+    <script src="/static/js/index.js"></script>
+</body>
+
+</html>

@@ -4,26 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
+	"github.com/btlike/repository"
+	"github.com/xgfone/gobt/g"
 	"gopkg.in/olivere/elastic.v3"
 )
 
-type TorrentSearch struct {
-	Infohash   string
-	Name       string
-	Length     int64
-	Heat       int64
-	CreateTime time.Time
+func GetTorrentByInfohashFromDB(client repository.Repository, infohash string) (repository.Torrent, error) {
+	if t, err := client.GetTorrentByInfohash(infohash); err != nil || t.Infohash != infohash {
+		return nil, err
+	} else {
+		return t, nil
+	}
 }
-
-// func GetTorrentByInfohashFromDB(client repository.Repository, infohash string) (*repository.Torrent, error) {
-// 	if t, err := client.GetTorrentByInfohash(infohash); err != nil || t.Infohash != infohash {
-// 		return nil, err
-// 	} else {
-// 		return *t, nil
-// 	}
-// }
 
 func GetTorrentByInfohashFromSE(client *elastic.Client, infohash string) (*TorrentSearch, error) {
 	indexType := strings.ToLower(string(infohash[0]))
@@ -40,29 +33,21 @@ func GetTorrentByInfohashFromSE(client *elastic.Client, infohash string) (*Torre
 	return &data, nil
 }
 
-func SearchKeyword(client *elastic.Client, key string, from, size int) ([]TorrentSearch, int, error) {
-	// _keys := make([]interface{}, 0, len(keys))
-	// for _, k := range keys {
-	// 	_keys = append(_keys, k)
-	// }
-	//query := elastic.NewTermsQuery("Name", _keys...)
+func SearchKeyword(client *elastic.Client, key string, from, size int) ([]repository.Torrent, int, error) {
 	query := elastic.NewQueryStringQuery(key)
-
 	result, err := client.Search().Index("torrent").Query(query).From(from).Size(size).Do()
 	if err != nil {
 		return nil, 0, err
 	}
 
-	torrents := make([]TorrentSearch, 0)
+	results := make([]repository.Torrent, 0)
 	if result.Hits.TotalHits > 0 {
 		for _, hit := range result.Hits.Hits {
-			var torrent TorrentSearch
-			if err := json.Unmarshal(*hit.Source, &torrent); err == nil {
-				torrent.Infohash = hit.Id
-				torrents = append(torrents, torrent)
+			if t, err := GetTorrentByInfohashFromDB(g.Repository, hit.Id); err == nil {
+				results = append(results, t)
 			}
 		}
 	}
 
-	return torrents, int(result.Hits.TotalHits), nil
+	return results, int(result.Hits.TotalHits), nil
 }

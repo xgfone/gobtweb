@@ -5,15 +5,16 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/btlike/repository"
 	"github.com/xgfone/gobtweb/logger"
 	"gopkg.in/olivere/elastic.v3"
 )
 
 var (
 	ElasticClient *elastic.Client
-	// Repository    repository.Repository
-	Conf   Config
-	Logger *logger.Logger
+	Repository    repository.Repository
+	Conf          Config
+	Logger        *logger.Logger
 )
 
 type Config struct {
@@ -42,9 +43,9 @@ func Init(config_file string) {
 	var err error
 	initConfig(config_file)
 
-	// if Repository, err = repository.NewMysqlRepository(Conf.Database, 256, 256); err != nil {
-	// 	panic(err)
-	// }
+	if Repository, err = repository.NewMysqlRepository(Conf.Database, 256, 256); err != nil {
+		panic(err)
+	}
 
 	if ElasticClient, err = elastic.NewClient(elastic.SetURL(Conf.Elastic)); err != nil {
 		panic(err)
