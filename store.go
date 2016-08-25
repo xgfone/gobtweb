@@ -45,7 +45,7 @@ func SearchKeyword(client *elastic.Client, key string, from, size int) ([]Torren
 	// 	_keys = append(_keys, k)
 	// }
 	//query := elastic.NewTermsQuery("Name", _keys...)
-	query := elastic.NewQueryStringQuery(keys)
+	query := elastic.NewQueryStringQuery(key)
 
 	result, err := client.Search().Index("torrent").Query(query).From(from).Size(size).Do()
 	if err != nil {
