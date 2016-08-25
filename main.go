@@ -46,8 +46,12 @@ func index(ctx *iris.Context) {
 func search(ctx *iris.Context) {
 	query := strings.TrimSpace(ctx.URLParam("q"))
 	if query == "" {
-		ctx.Redirect("/")
-		return
+		query = strings.TrimSpace(ctx.FormValueString("key"))
+		if query == "" {
+			ctx.Redirect("/")
+			return
+		}
+
 	}
 
 	var from int
