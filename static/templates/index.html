@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BT Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="BT, magnet, 磁力下载, 资源搜索, BT下载, 种子下载, btdigg">
+    <meta name="description" content="A BT search engine based on the DHT spider and ElasticSearch.">
+    <link rel="stylesheet" href="/static/css/lib/materialize.min.css">
+    <link rel='stylesheet' href='/static/css/lib/nprogress.css'>
+    <link rel="stylesheet" href="/static/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+  </head>
+
+  <body>
+    <main>
+      <div class="container">
+        <form action="/search" class="col s12">
+          <div class="row logo-field">
+            <div class="col l6 offset-l3 s10 offset-s1 center-align">
+              <img src="/static/img/logo.png" alt="logo" class="logo">
+            </div>
+          </div>
+          <div class="row search-field">
+            <div class="input-field col s8 offset-s2 center-align">
+              <input placeholder="Search" type="text" name="key" autocomplete="off">
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="page-footer">
+      <div class="footer-copyright">
+        <div class="container">
+          <div class="row">
+            <div class="l12 s12 center-align disclaimer">
+              DISCLAIMER: This site just provides BT searching service. It does NOT save any resource from the internet.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/js/lib/jquery.min.js"></script>
+    <script src="/static/js/lib/materialize.min.js"></script>
+    <script src="/static/js/lib/nprogress.js"></script>
+    <script src="/static/js/lib/mark.min.js"></script>
+    <script src="/static/js/index.js"></script>
+  </body>
+</html>

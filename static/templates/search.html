@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BT Search - {{ query }}</title>
+</head>
+<body>
+
+{% for torrent in  torrents %}
+    <div>
+        {{ torrent.Name }} | {{ torrent.Length }}
+    </div>
+{% endfor %}
+
+</body>
+</html>
