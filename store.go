@@ -8,6 +8,7 @@ import (
 
 	"github.com/btlike/repository"
 	"github.com/xgfone/gobt/g"
+	"gopkg.in/olivere/elastic.v3"
 )
 
 type TorrentSearch struct {
@@ -15,14 +16,6 @@ type TorrentSearch struct {
 	Length     int64
 	Heat       int64
 	CreateTime time.Time
-}
-
-func GetTorrentByInfohashFromDB(client repository.Repository, infohash string) (*repository.Torrent, error) {
-	if t, err := client.GetTorrentByInfohash(infohash); err != nil || t.Infohash != infohash {
-		return nil, err
-	} else {
-		return &t, nil
-	}
 }
 
 func GetTorrentByInfohashFromSE(client *elastic.Client, infohash string) (*TorrentSearch, error) {
@@ -50,8 +43,8 @@ func SearchKeyword(client *elastic.Client, key string, from, size int) ([]reposi
 	results := make([]repository.Torrent, 0)
 	if result.Hits.TotalHits > 0 {
 		for _, hit := range result.Hits.Hits {
-			if t, err := GetTorrentByInfohashFromDB(g.Repository, hit.Id); err == nil {
-				results = append(results, *t)
+			if t, err := g.Repository.GetTorrentByInfohash(hit.Id); err == nil {
+				results = append(results, t)
 			}
 		}
 	}
