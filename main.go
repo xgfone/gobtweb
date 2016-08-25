@@ -74,7 +74,7 @@ func search(ctx *iris.Context) {
 	urlPattern := fmt.Sprintf("/search?key=%v&page=", query)
 	pn := NewPagination(total, page, size, urlPattern)
 	pn.SetNumLinks(10).Init()
-	err = ctx.Render("search.html", map[string]interface{}{
+	err = ctx.Render("search2.html", map[string]interface{}{
 		"query":      query,
 		"torrents":   data,
 		"total":      total,
