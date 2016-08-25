@@ -53,8 +53,8 @@ func search(ctx *iris.Context) {
 		}
 	}
 
-	var page int
-	if page, err := ctx.URLParamInt("page"); err != nil || page < 1 {
+	page, err := ctx.URLParamInt("page")
+	if err != nil || page < 1 {
 		page = 1
 	}
 

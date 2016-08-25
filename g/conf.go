@@ -59,4 +59,8 @@ func Init(config_file string) {
 	if Logger, err = logger.NewLogger(Conf.LogLevel, Conf.LogFile); err != nil {
 		panic(err)
 	}
+
+	if Conf.PageSize < 1 {
+		Conf.PageSize = 20
+	}
 }
