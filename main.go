@@ -62,7 +62,7 @@ func search(ctx *iris.Context) {
 	size := g.Conf.PageSize
 	from := size * (page - 1)
 
-	data, total, err := SearchKeyword(g.ElasticClient, query, from, size)
+	data, total, err := SearchKeyword(g.ElasticClient, g.Repository, query, from, size)
 	if err != nil {
 		handlerError(ctx, err)
 		return

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/btlike/repository"
-	"github.com/xgfone/gobt/g"
 	"gopkg.in/olivere/elastic.v3"
 )
 
@@ -33,7 +32,7 @@ func GetTorrentByInfohashFromSE(client *elastic.Client, infohash string) (*Torre
 	return &data, nil
 }
 
-func SearchKeyword(client *elastic.Client, key string, from, size int) ([]repository.Torrent, int, error) {
+func SearchKeyword(client *elastic.Client, sql repository.Repository, key string, from, size int) ([]repository.Torrent, int, error) {
 	query := elastic.NewQueryStringQuery(key)
 	result, err := client.Search().Index("torrent").Query(query).From(from).Size(size).Do()
 	if err != nil {
@@ -43,7 +42,7 @@ func SearchKeyword(client *elastic.Client, key string, from, size int) ([]reposi
 	results := make([]repository.Torrent, 0)
 	if result.Hits.TotalHits > 0 {
 		for _, hit := range result.Hits.Hits {
-			if t, err := g.Repository.GetTorrentByInfohash(hit.Id); err == nil {
+			if t, err := sql.GetTorrentByInfohash(hit.Id); err == nil {
 				results = append(results, t)
 			}
 		}
