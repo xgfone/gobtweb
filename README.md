@@ -1,6 +1,8 @@
 # gobtweb
 A web interface of the project gobt, which is based on [iris](https://github.com/kataras/iris).
 
+The template of the web is from http://bthub.io .
+
 ## Usage
 ### Installation
 ```
