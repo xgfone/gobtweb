@@ -9,12 +9,13 @@ import (
 	"github.com/iris-contrib/template/django"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/config"
+	"github.com/xgfone/go-utils/log"
 	"github.com/xgfone/gobtweb/g"
 )
 
 func handlerError(ctx *iris.Context, err error) {
 	if err != nil {
-		g.Logger.Error("Failed to return the response", "err", err)
+		log.Errorj("Failed to return the response", "err", err)
 		ctx.EmitError(iris.StatusInternalServerError)
 	}
 }

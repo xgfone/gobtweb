@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/btlike/repository"
-	"github.com/xgfone/gobtweb/logger"
+	"github.com/xgfone/go-utils/log"
 	"gopkg.in/olivere/elastic.v3"
 )
 
@@ -14,7 +14,6 @@ var (
 	ElasticClient *elastic.Client
 	Repository    repository.Repository
 	Conf          Config
-	Logger        *logger.Logger
 )
 
 type Config struct {
@@ -44,6 +43,13 @@ func Init(config_file string) {
 	var err error
 	initConfig(config_file)
 
+	if logger, err := log.NewLogger(Conf.LogLevel, Conf.LogFile); err != nil {
+		panic(err)
+	} else {
+		logger.CallerTrack = true
+		log.SetDefaultLogger(logger)
+	}
+
 	if Repository, err = repository.NewMysqlRepository(Conf.Database, 256, 256); err != nil {
 		panic(err)
 	}
@@ -56,10 +62,6 @@ func Init(config_file string) {
 		if _, err := ElasticClient.CreateIndex("torrent").Do(); err != nil {
 			panic(err)
 		}
-	}
-
-	if Logger, err = logger.NewLogger(Conf.LogLevel, Conf.LogFile); err != nil {
-		panic(err)
 	}
 
 	if Conf.PageSize < 1 {
