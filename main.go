@@ -93,6 +93,7 @@ func main() {
 
 	templateDir := g.Conf.TemplateDirectory
 	django_cfg := django.DefaultConfig()
+	django_cfg.DebugTemplates = g.Conf.TemplateDebug
 	web.UseTemplate(django.New(django_cfg)).Directory(templateDir, ".html")
 
 	web.Get("/", index)

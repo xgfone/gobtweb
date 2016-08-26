@@ -68,7 +68,7 @@
             <div class="col s6 offset-s1">
                 <ul class="pagination">
                 {% for page in pagination.Pages %}
-                    {% if (page.Number == pagination.Start) && (page.Number > 1) }
+                    {% if (page.Number == pagination.Start) && (page.Number > 1) %}
                     <li>
                         <a href="/search?key={{ query }}&page={{ page.Number - 1 }}">
                             <i class="fa fa-angle-left" aria-hidden="true"></i>

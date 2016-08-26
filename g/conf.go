@@ -25,6 +25,7 @@ type Config struct {
 	LogLevel string `json:"loglevel"`
 	PageSize int    `json:"page_size"`
 
+	TemplateDebug     bool   `json:"template_debug"`
 	TemplateDirectory string `json:"template_directory"`
 	StaticDirectory   string `json:"static_directory"`
 }
