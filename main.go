@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	_ "github.com/flosch/pongo2-addons"
 	"github.com/iris-contrib/template/django"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/config"

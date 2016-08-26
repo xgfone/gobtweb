@@ -50,7 +50,7 @@
                         <div class="status">
                             <ul>
                                 <li>
-                                    size: {{ torrent.Length }}Bytes
+                                    size: {{ torrent.Length|filesizeformat }}
                                 </li>
                                 <li>
                                     files: {{ torrent.FileCount }}
