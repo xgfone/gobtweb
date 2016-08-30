@@ -23,6 +23,7 @@ type Config struct {
 	LogFile  string `json:"logfile"`
 	LogLevel string `json:"loglevel"`
 	PageSize int    `json:"page_size"`
+	IsDev    bool   `json:"is_dev"`
 
 	TemplateDebug     bool   `json:"template_debug"`
 	TemplateDirectory string `json:"template_directory"`

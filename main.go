@@ -90,6 +90,7 @@ func main() {
 
 	cfg := config.Default()
 	cfg.ProfilePath = "/debug"
+	cfg.IsDevelopment = g.Conf.IsDev
 
 	web := iris.New(cfg)
 
